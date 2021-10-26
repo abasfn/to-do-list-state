@@ -7,9 +7,12 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
-import { dataType } from '../../../model/statemodel';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import { dataType } from '../../model/statemodel';
+import Snackbar from '@mui/material/Snackbar';
+import { Tune } from '@mui/icons-material';
+import { ErrorMessage } from '@hookform/error-message';
 
 type ModalBoxsType = {
     ModatTitle?: string;
@@ -19,13 +22,26 @@ type ModalBoxsType = {
     data?: dataType;
 }
 const ModalBoxs = (props: ModalBoxsType) => {
+    const inishialItem: dataType = {
+        firstName: '',
+        lastName: '',
+        age: '',
+        phoneNumber: '',
+        id: -1,
+        index: -1
+    }
+    const [data, setdata] = useState<dataType>(props.data);
 
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<dataType>();
-
     const onSubmit = (data: dataType) => {
-        props.onSubmit(data)
+        if (errors.age || errors.phoneNumber) {
+            return
+        }
+        props.onSubmit(data);
         reset();
+        setOpen(false);
     }
+
     const style = {
         position: 'absolute' as 'absolute',
         top: '50%',
@@ -38,14 +54,15 @@ const ModalBoxs = (props: ModalBoxsType) => {
         p: 4,
     };
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+    }
     const handleClose = () => {
         setOpen(false);
     }
-
     return (
         <div>
-            <Box onClick={props.onClick}>  <Button onClick={handleOpen} variant="outlined" startIcon={props.TitleButton === 'ADD' ? <AddIcon /> : <EditIcon />}>{props.TitleButton}</Button></Box>
+            <Box mb={1} sx={{ display: 'flex', justifyContent: 'end' }} onClick={props.onClick}>  <Button onClick={handleOpen} variant="outlined" startIcon={props.TitleButton === 'ADD' ? <AddIcon /> : <EditIcon />}>{props.TitleButton}</Button></Box>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -72,19 +89,23 @@ const ModalBoxs = (props: ModalBoxsType) => {
                                 </Box>
                                 <Box mt={2}>
                                     <TextField placeholder={props.data?.age}  {...register('age', { required: true, maxLength: 3 })} sx={{ width: 1 }} type='number' id="standard-basic" label={'age'} variant="standard" />
+                                    {errors.age && <Box sx={{ color: 'error.main' }}>Is empty or more than 3 characters</Box>}
                                 </Box>
                                 <Box mt={2}>
                                     <TextField placeholder={props.data?.phoneNumber}  {...register('phoneNumber', { required: true, maxLength: 11 })} type='number' sx={{ width: 1 }} id="standard-basic" label={'phonenumber'} variant="standard" />
+                                    {errors.phoneNumber && <Box sx={{ color: 'error.main' }}>Is empty or more than 11 characters</Box>}
                                 </Box>
                             </Box>
                             <Box sx={{ display: 'flex', p: 1, bgcolor: 'background.paper' }}>
-                                <Box sx={{ flexGrow: 1 }}> <Button onClick={handleClose} variant="contained">Close</Button></Box>
-                                <Box><Button onClick={handleClose} type='submit' variant="contained">Add</Button></Box>
+                                <Box sx={{ flexGrow: 1 }}>
+                                    <Button onClick={handleClose} variant="contained">Close</Button></Box>
+                                <Box><Button onClick={handleSubmit(onSubmit)} type='submit' variant="contained">Add</Button></Box>
                             </Box>
                         </form>
                     </Box>
                 </Fade>
             </Modal >
+
         </div >
     );
 };
