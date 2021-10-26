@@ -30,7 +30,7 @@ const ModalBoxs = (props: ModalBoxsType) => {
         id: -1,
         index: -1
     }
-    const [data, setdata] = useState<dataType>(props.data);
+    const [data, setdata] = useState<dataType>(props.data??inishialItem);
 
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<dataType>();
     const onSubmit = (data: dataType) => {
@@ -82,17 +82,17 @@ const ModalBoxs = (props: ModalBoxsType) => {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Box>
                                 <Box mt={2}>
-                                    <TextField placeholder={props.data?.firstName} {...register('firstName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'firstName'} variant="standard" />
+                                    <TextField value={data?.firstName} {...register('firstName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'firstName'} variant="standard" />
                                 </Box>
                                 <Box mt={2}>
-                                    <TextField placeholder={props.data?.lastName} {...register('lastName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'lastName'} variant="standard" />
+                                    <TextField value={data?.lastName} {...register('lastName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'lastName'} variant="standard" />
                                 </Box>
                                 <Box mt={2}>
-                                    <TextField placeholder={props.data?.age}  {...register('age', { required: true, maxLength: 3 })} sx={{ width: 1 }} type='number' id="standard-basic" label={'age'} variant="standard" />
+                                    <TextField value={data?.age}  {...register('age', { required: true, maxLength: 3 })} sx={{ width: 1 }} type='number' id="standard-basic" label={'age'} variant="standard" />
                                     {errors.age && <Box sx={{ color: 'error.main' }}>Is empty or more than 3 characters</Box>}
                                 </Box>
                                 <Box mt={2}>
-                                    <TextField placeholder={props.data?.phoneNumber}  {...register('phoneNumber', { required: true, maxLength: 11 })} type='number' sx={{ width: 1 }} id="standard-basic" label={'phonenumber'} variant="standard" />
+                                    <TextField value={data?.phoneNumber}  {...register('phoneNumber', { required: true, maxLength: 11 })} type='number' sx={{ width: 1 }} id="standard-basic" label={'phonenumber'} variant="standard" />
                                     {errors.phoneNumber && <Box sx={{ color: 'error.main' }}>Is empty or more than 11 characters</Box>}
                                 </Box>
                             </Box>
