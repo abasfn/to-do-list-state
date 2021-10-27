@@ -21,10 +21,10 @@ type ModalBoxsType = {
     onClick?: () => void;
     onClose?: () => void;
     data?: dataType;
-    status:boolean;
+    status: boolean;
 }
 const ModalBoxs = (props: ModalBoxsType) => {
-    const inishialItem: dataType = {
+    const initialItem: dataType = {
         firstName: '',
         lastName: '',
         age: '',
@@ -32,39 +32,33 @@ const ModalBoxs = (props: ModalBoxsType) => {
         id: -1,
         index: -1
     }
-    const [data, setdata] = useState<dataType>(props.data ?? inishialItem);
-
+    const [dataEdit, setdataEdit] = useState<dataType>(props.data ?? initialItem);
     useEffect(() => {
-        debugger;
-        setdata(props.data ?? inishialItem);
+        debugger
+        setdataEdit(props.data ?? initialItem);
     }, [props.data])
-
+    
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<dataType>();
     useEffect(() => {
         const subscription = watch((value, { name, type }) => {
-         setdata(value)
+            setdataEdit(value)
         });
-      }, [watch]);
+    }, [watch]);
     const onSubmit = (data: dataType) => {
         if (errors.age || errors.phoneNumber) {
             return
         }
         props.onSubmit(data);
-        // reset();
-        // setOpen(false);
-        // setdata(inishialItem)
+        reset();
         handleClose();
-
     }
-
-
     const handleClose = () => {
-        if(!props.onClose) return;
+        if (!props.onClose) return;
         props.onClose();
     }
     return (
         <div>
-            <Box mb={1} sx={{ display: 'flex', justifyContent: 'end' }} onClick={props.onClick}>  
+            <Box mb={1} sx={{ display: 'flex', justifyContent: 'end' }} onClick={props.onClick}>
             </Box>
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -82,22 +76,22 @@ const ModalBoxs = (props: ModalBoxsType) => {
                         <Typography id="transition-modal-title" variant="h6" component="h2">
                             {props.ModatTitle}
                         </Typography>
-                        -{JSON.stringify(data)}-
+                        -{JSON.stringify(dataEdit)}-
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Box>
                                 <Box mt={2}>
-                                    <TextField value={data?.firstName} {...register('firstName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'firstName'} variant="standard" />
+                                    <input type="text" id="standard-basic"  value={dataEdit?.firstName} />
+                                    <TextField value={dataEdit?.firstName} {...register('firstName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'firstName'} variant="standard" />
                                 </Box>
                                 <Box mt={2}>
-                                    <TextField value={data?.lastName} {...register('lastName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'lastName'} variant="standard" />
+                                    <TextField value={dataEdit?.lastName} {...register('lastName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'lastName'} variant="standard" />
                                 </Box>
                                 <Box mt={2}>
-                                    <input type="text" value={data?.firstName} name="" id="" />
-                                    <TextField value={data?.age}  {...register('age', { required: true, maxLength: 3 })} sx={{ width: 1 }} type='number' id="standard-basic" label={'age'} variant="standard" />
+                                    <TextField value={dataEdit?.age}  {...register('age', { required: true, maxLength: 3 })} sx={{ width: 1 }} type='number' id="standard-basic" label={'age'} variant="standard" />
                                     {errors.age && <Box sx={{ color: 'error.main' }}>Is empty or more than 3 characters</Box>}
                                 </Box>
                                 <Box mt={2}>
-                                    <TextField value={data?.phoneNumber}  {...register('phoneNumber', { required: true, maxLength: 11 })} type='number' sx={{ width: 1 }} id="standard-basic" label={'phonenumber'} variant="standard" />
+                                    <TextField value={dataEdit?.phoneNumber}  {...register('phoneNumber', { required: true, maxLength: 11 })} type='number' sx={{ width: 1 }} id="standard-basic" label={'phonenumber'} variant="standard" />
                                     {errors.phoneNumber && <Box sx={{ color: 'error.main' }}>Is empty or more than 11 characters</Box>}
                                 </Box>
                             </Box>

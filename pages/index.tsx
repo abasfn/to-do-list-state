@@ -1,12 +1,9 @@
 import type { NextPage } from 'next'
 import styles from '../styles/Home.module.css'
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect } from 'react';
 import { dataType } from '../model/statemodel';
 import { useState } from 'react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import ModalBoxs from '../component/modal/modal.compoent';
 import ModalDelete from '../component/modalDelete/modaldelete.component';
@@ -17,9 +14,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -27,9 +21,10 @@ const Home: NextPage = () => {
   const [data, setdata] = useState<dataType[]>([]);
   const [index, setindex] = useState<number>(-1);
   const [modal, setmodal] = useState<boolean>(false);
+  const [modalEdit, setmodalEdit] = useState<boolean>(false);
 
 
-  const inishialItem: dataType = {
+  const initialItem: dataType = {
     firstName: '',
     lastName: '',
     age: '',
@@ -37,12 +32,13 @@ const Home: NextPage = () => {
     id: -1,
     index: -1
   }
-  const [item, setitem] = useState<dataType>(inishialItem);
+  const [item, setitem] = useState<dataType>(initialItem);
   /**
    * 
    * @param {dataType} item- the item you want to add 
    */
   const onSubmit = (item: dataType) => {
+    debugger
     setmodal(true)
     let itemData = item;
     itemData.id = data.length;
@@ -64,7 +60,7 @@ const Home: NextPage = () => {
   const handeleEdit = (item: dataType, index: number) => {
     setitem(item);
     setindex(index);
-    setmodal(true);
+    setmodalEdit(true);
   }
   /**
    * 
@@ -77,15 +73,16 @@ const Home: NextPage = () => {
     setdata([...data])
   }
   const handelAdd = () => {
-    setmodal(true)
+    setmodal(true);
   }
- 
- 
+
+
   return (
     <div className={styles.container}>
       <Container maxWidth="md">
-        <Button onClick={handelAdd} variant="outlined" startIcon={ <AddIcon />}>add</Button>
-        <ModalBoxs status={modal} data={item} ModatTitle='ADD ITEM' onClose={()=>setmodal(false)} onSubmit={onSubmit} TitleButton='ADD' />
+        <ModalBoxs status={modal} ModatTitle='ADD ITEM' onClose={() => setmodal(false)} onSubmit={onSubmit} TitleButton='ADD' />
+        <ModalBoxs status={modalEdit} data={item} ModatTitle='edit item ITEM' onClose={() => setmodalEdit(false)} onSubmit={EdiOnSubmit} TitleButton='edit' />
+        <Button onClick={handelAdd} variant="outlined" startIcon={<AddIcon />}>add</Button>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -111,9 +108,7 @@ const Home: NextPage = () => {
                   <TableCell sx={{ textAlign: 'center' }} align="right">{item.phoneNumber}</TableCell>
                   <TableCell sx={{ display: 'flex', gap: 1, justifyContent: 'center' }} align="right">
                     <ModalDelete handelDelete={() => handeleDelete(item)} title='DELETE ITEM' paragraph='Are You Sure you want to delete' />
-                    {/* <ModalBoxs data={item} onClick={() => handeleEdit(item, index)} ModatTitle='EDIT ITEM' onSubmit={EdiOnSubmit} TitleButton='EDIT' /> */}
-            <Button onClick={() => handeleEdit(item, index)} variant="outlined" startIcon={ <EditIcon />}>EDIT</Button>
-                 
+                    <Button onClick={() => handeleEdit(item, index)} variant="outlined" startIcon={<EditIcon />}>EDIT</Button>
                   </TableCell>
                 </TableRow>
               ))}
