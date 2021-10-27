@@ -16,6 +16,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
 
 const Home: NextPage = () => {
   const [data, setdata] = useState<dataType[]>([]);
@@ -80,9 +81,11 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Container maxWidth="md">
-        <ModalBoxs status={modal} ModatTitle='ADD ITEM' onClose={() => setmodal(false)} onSubmit={onSubmit} TitleButton='ADD' />
-        <ModalBoxs status={modalEdit} data={item} ModatTitle='edit item ITEM' onClose={() => setmodalEdit(false)} onSubmit={EdiOnSubmit} TitleButton='edit' />
-        <Button onClick={handelAdd} variant="outlined" startIcon={<AddIcon />}>add</Button>
+        <ModalBoxs status={modal} ModatTitle='Add Item' onClose={() => setmodal(false)} onSubmit={onSubmit} TitleButton='Add' />
+        <ModalBoxs status={modalEdit} data={item} ModatTitle='Edit item' onClose={() => setmodalEdit(false)} onSubmit={EdiOnSubmit} TitleButton='update' />
+        <Box sx={{display:'flex',justifyContent:'end'}}>
+        <Button sx={{marginBottom:2,textAlign:'right'}} onClick={handelAdd} variant="outlined" startIcon={<AddIcon />}>add</Button>
+       </Box>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -107,7 +110,7 @@ const Home: NextPage = () => {
                   <TableCell sx={{ textAlign: 'center' }} align="right">{item.age}</TableCell>
                   <TableCell sx={{ textAlign: 'center' }} align="right">{item.phoneNumber}</TableCell>
                   <TableCell sx={{ display: 'flex', gap: 1, justifyContent: 'center' }} align="right">
-                    <ModalDelete handelDelete={() => handeleDelete(item)} title='DELETE ITEM' paragraph='Are You Sure you want to delete' />
+                    <ModalDelete handelDelete={() => handeleDelete(item)} title='Delete item' paragraph='Are You Sure you want to delete' />
                     <Button onClick={() => handeleEdit(item, index)} variant="outlined" startIcon={<EditIcon />}>EDIT</Button>
                   </TableCell>
                 </TableRow>

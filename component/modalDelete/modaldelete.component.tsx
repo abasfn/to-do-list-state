@@ -41,11 +41,11 @@ const ModalDelete = (props: ModalDeleteType) => {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {props.title}
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{ mt: 1 }}>
                         {props.paragraph}
                     </Typography>
-                    <Box sx={{ display: 'flex', p: 1, bgcolor: 'background.paper' }}>
-                        <Box sx={{ flexGrow: 1 }}> <Button onClick={handleClose} variant="contained">NO</Button></Box>
+                    <Box mt={2} sx={{ display: 'flex',gap:2}}>
+                        <Box > <Button onClick={handleClose} variant="contained">NO</Button></Box>
                         <Box onClick={props.handelDelete}><Button onClick={handleClose} type='submit' variant="contained">YES</Button></Box>
                     </Box>
                 </Box>

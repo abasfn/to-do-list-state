@@ -7,11 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
-import EditIcon from '@mui/icons-material/Edit';
 import { dataType } from '../../model/statemodel';
-import Snackbar from '@mui/material/Snackbar';
-import { Tune } from '@mui/icons-material';
-import { ErrorMessage } from '@hookform/error-message';
 import { style } from './style';
 
 type ModalBoxsType = {
@@ -34,10 +30,10 @@ const ModalBoxs = (props: ModalBoxsType) => {
     }
     const [dataEdit, setdataEdit] = useState<dataType>(props.data ?? initialItem);
     useEffect(() => {
-        debugger
+        reset();
         setdataEdit(props.data ?? initialItem);
     }, [props.data])
-    
+
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<dataType>();
     useEffect(() => {
         const subscription = watch((value, { name, type }) => {
@@ -49,7 +45,7 @@ const ModalBoxs = (props: ModalBoxsType) => {
             return
         }
         props.onSubmit(data);
-        reset();
+        reset()
         handleClose();
     }
     const handleClose = () => {
@@ -76,11 +72,9 @@ const ModalBoxs = (props: ModalBoxsType) => {
                         <Typography id="transition-modal-title" variant="h6" component="h2">
                             {props.ModatTitle}
                         </Typography>
-                        -{JSON.stringify(dataEdit)}-
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <Box>
                                 <Box mt={2}>
-                                    <input type="text" id="standard-basic"  value={dataEdit?.firstName} />
                                     <TextField value={dataEdit?.firstName} {...register('firstName', { required: true })} sx={{ width: 1 }} id="standard-basic" label={'firstName'} variant="standard" />
                                 </Box>
                                 <Box mt={2}>
@@ -95,10 +89,9 @@ const ModalBoxs = (props: ModalBoxsType) => {
                                     {errors.phoneNumber && <Box sx={{ color: 'error.main' }}>Is empty or more than 11 characters</Box>}
                                 </Box>
                             </Box>
-                            <Box sx={{ display: 'flex', p: 1, bgcolor: 'background.paper' }}>
-                                <Box sx={{ flexGrow: 1 }}>
-                                    <Button onClick={handleClose} variant="contained">Close</Button></Box>
-                                <Box><Button onClick={handleSubmit(onSubmit)} type='submit' variant="contained">yes</Button></Box>
+                            <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Button onClick={handleClose} variant="contained">Close</Button>
+                                <Button onClick={handleSubmit(onSubmit)} type='submit' variant="contained">{props.TitleButton}</Button>
                             </Box>
                         </form>
                     </Box>
