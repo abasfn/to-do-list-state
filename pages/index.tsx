@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import Zoom from '@mui/material/Zoom';
 
 const Home: NextPage = () => {
   const [data, setdata] = useState<dataType[]>([]);
@@ -39,7 +40,6 @@ const Home: NextPage = () => {
    * @param {dataType} item- the item you want to add 
    */
   const onSubmit = (item: dataType) => {
-    debugger
     setmodal(true)
     let itemData = item;
     itemData.id = data.length;
@@ -83,9 +83,9 @@ const Home: NextPage = () => {
       <Container maxWidth="md">
         <ModalBoxs status={modal} ModatTitle='Add Item' onClose={() => setmodal(false)} onSubmit={onSubmit} TitleButton='Add' />
         <ModalBoxs status={modalEdit} data={item} ModatTitle='Edit item' onClose={() => setmodalEdit(false)} onSubmit={EdiOnSubmit} TitleButton='update' />
-        <Box sx={{display:'flex',justifyContent:'end'}}>
-        <Button sx={{marginBottom:2,textAlign:'right'}} onClick={handelAdd} variant="outlined" startIcon={<AddIcon />}>add</Button>
-       </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+          <Button sx={{ marginBottom: 2, textAlign: 'right' }} onClick={handelAdd} variant="outlined" startIcon={<AddIcon />}>add</Button>
+        </Box>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -97,11 +97,15 @@ const Home: NextPage = () => {
                 <TableCell sx={{ textAlign: 'center' }} align="right">button</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {data.map((item, index) => (
+            {data.map((item, index) => (
+              <Zoom in={true} timeout={500} key={item.id}>
+              <TableBody sx={{
+                '&:hover': {
+                  background: "#80808024",
+                },
+              }}>
                 <TableRow
-                  key={item.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0, } }}
                 >
                   <TableCell sx={{ textAlign: 'center' }} component="th" scope="row">
                     {item.firstName}
@@ -114,8 +118,9 @@ const Home: NextPage = () => {
                     <Button onClick={() => handeleEdit(item, index)} variant="outlined" startIcon={<EditIcon />}>EDIT</Button>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
+              </TableBody>
+              </Zoom>
+            ))}
           </Table>
         </TableContainer>
       </Container>
