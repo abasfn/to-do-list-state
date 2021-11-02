@@ -3,6 +3,7 @@ import Main from './main.component';
 test('shode render to do component', () => {
     // render(<Main/>);
     // const toDoElement = screen.getByTestId('todo-1');
-    // expect(toDoElement).toBeVisible()
+    // expect(toDoElement).toBeInDocument()
+    // // expect(true).toBe(true)
 
 })
